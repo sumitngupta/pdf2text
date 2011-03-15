@@ -1,0 +1,20 @@
+%h1 Pdf2Txt
+:coffee_script
+  $('url-form').submit (event) ->
+    $.ajax
+      dataType: 'json',
+      type: 'get',
+      data: $.param(this.serializeArray()),
+      url: '/convert',
+      error: ->
+        $('notificiation').text('You had an error trying to convert the Pdf.')
+      success: ->
+        $('notification').text('Congrats!  You converted a Pdf!')
+        $('#converted-text').text(data.converted_pdf)
+    return false
+
+%form{:action => "#", :method => 'get', :id => 'url-form'}
+  %fieldset
+    %label{:for => "url"} Url to Pdf:
+    %input{:type => "text", :name => "url"}
+    %input{:type => 'submit', :value => 'Submit'}
