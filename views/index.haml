@@ -1,20 +1,50 @@
-%h1 Pdf2Txt
-:coffee_script
-  $('url-form').submit (event) ->
-    $.ajax
-      dataType: 'json',
-      type: 'get',
-      data: $.param(this.serializeArray()),
-      url: '/convert',
-      error: ->
-        $('notificiation').text('You had an error trying to convert the Pdf.')
-      success: ->
-        $('notification').text('Congrats!  You converted a Pdf!')
-        $('#converted-text').text(data.converted_pdf)
-    return false
+!!!
+%html
+  %head
+    %script{:src => 'https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js'}
+    -#:coffee_script
+    -#  $('url-form').submit (event) ->
+    -#    $.ajax
+    -#      dataType: 'json',
+    -#      type: 'get',
+    -#      data: $.param(this.serializeArray()),
+    -#      url: '/convert',
+    -#      error: ->
+    -#        $('notificiation').text('You had an error trying to convert the Pdf.')
+    -#      success: ->
+    -#        $('notification').text('Congrats!  You converted a Pdf!')
+    -#        $('#converted-text').text(data.converted_pdf)
+    -#    return false
 
-%form{:action => "#", :method => 'get', :id => 'url-form'}
-  %fieldset
-    %label{:for => "url"} Url to Pdf:
-    %input{:type => "text", :name => "url"}
-    %input{:type => 'submit', :value => 'Submit'}
+    :javascript
+      $('#url-form').live('submit', function(event) {
+
+        $.ajax({
+          dataType: 'json',
+          type: 'get',
+          url: '/convert',
+          success: function(data) {
+            $('#notification').text('Congrats!  You converted a Pdf!');
+            return $('#converted-text').text(data.converted_pdf);
+          },
+          error: function(data) {
+            return $('#notificiation').text('You had an error trying to convert the Pdf.');
+          }
+        });
+
+        return false;
+      });
+
+    %title
+      Convert Yo PDF's
+  %body
+    #notification
+    %h1 Pdf2Txt
+
+    %form{:action => "#", :method => 'get', :id => 'url-form'}
+      %fieldset
+        %label{:for => "url"} Url to Pdf:
+        %input{:type => "text", :name => "url"}
+        %input{:type => 'submit', :value => 'Submit'}
+
+    %pre#converted-text
