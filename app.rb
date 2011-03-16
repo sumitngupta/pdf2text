@@ -7,8 +7,9 @@ class Pdf2Text < Sinatra::Base
   end
 
   get '/convert' do
-
-    ext_pdf = open('http://www.impressivewebs.com/jquery-tutorial-beginners.pdf')
+    p params
+    #'http://www.impressivewebs.com/jquery-tutorial-beginners.pdf'
+    ext_pdf = open(params[:url])
     cp = `pdftotext '#{ext_pdf.path}' - 2>&1`
 
 #    ext_pdf = open('http://www.impressivewebs.com/jquery-tutorial-beginners.pdf')

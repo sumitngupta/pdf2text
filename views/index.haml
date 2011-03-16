@@ -22,6 +22,7 @@
         $.ajax({
           dataType: 'json',
           type: 'get',
+          data: $.param($(this).serializeArray()),
           url: '/convert',
           success: function(data) {
             $('#notification').text('Congrats!  You converted a Pdf!');
